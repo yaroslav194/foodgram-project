@@ -1,20 +1,21 @@
 import json
 from urllib.parse import unquote
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
 
-from recipes.models import Recipe, Ingredient, User
-
-from .models import FavoriteRecipe, Purchase, Subscription
+from recipes.models import Ingredient, Recipe, User
+from .managers import Purchase
+from .models import FavoriteRecipe, Subscription
 
 
 class Favorites(LoginRequiredMixin, View):
     def post(self, request):
         recipe_id = json.loads(request.body).get('id')
         if recipe_id is not None:
-            obj, created = FavoriteRecipe.objects.get_or_create(
+            _, created = FavoriteRecipe.objects.get_or_create(
                 recipe_id=recipe_id, user=request.user)
             return JsonResponse({'success': created})
         return JsonResponse({'success': False})
@@ -31,7 +32,7 @@ class Subscriptions(LoginRequiredMixin, View):
         author_id = json.loads(request.body).get('id')
         author = get_object_or_404(User, pk=author_id)
         if author != request.user:
-            obj, created = Subscription.objects.get_or_create(
+            _, created = Subscription.objects.get_or_create(
                 author=author, user=request.user)
             return JsonResponse({'success': created})
         return JsonResponse({'success': True})

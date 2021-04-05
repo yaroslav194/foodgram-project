@@ -1,31 +1,27 @@
 import pymorphy2
 from django import template
 from django.shortcuts import get_object_or_404
-from api.models import Purchase
+
+from api.managers import Purchase
 from recipes.models import Recipe
 
 register = template.Library()
-
 morph = pymorphy2.MorphAnalyzer()
 
 
 @register.filter
 def formatting_tags(request, tag):
     if 'tags' in request.GET:
-
         tags = request.GET.get('tags')
         tags = tags.split(',')
-
         if tag not in tags:
             tags.append(tag)
         else:
             tags.remove(tag)
-        if '' in tags:
+        while '' in tags:
             tags.remove('')
-
         result = ','.join(tags)
         return result
-
     return tag
 
 
@@ -44,5 +40,4 @@ def purchase_list(user_id):
 def recipe_in_purchases(recipe_id, user_id):
     recipes = purchase_list(user_id)
     recipe = get_object_or_404(Recipe, pk=recipe_id)
-    if recipe in recipes:
-        return True
+    return recipe in recipes

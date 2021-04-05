@@ -1,15 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from taggit.models import Tag
 
-from api.models import Purchase, Subscription
+from api.managers import Purchase
 from foodgram.settings import ITEMS_FOR_PAGINATOR
-
 from .forms import RecipeForm
-from .models import RecipeIngredients, Recipe, User, Ingredient
+from .models import Ingredient, Recipe, RecipeIngredient, User
 
 
 def index(request):
@@ -25,8 +23,12 @@ def index(request):
     return render(
         request,
         'recipes/index.html',
-        {'recipes': recipes, 'paginator': paginator,
-         'page': page, 'tags': tags_from_get}
+        {
+            'recipes': recipes,
+            'paginator': paginator,
+            'page': page,
+            'tags': tags_from_get
+        }
     )
 
 
@@ -41,28 +43,31 @@ def new_recipe(request):
         save_recipe(recipe, ingredients, request)
         form.save_m2m()
         return redirect('index')
-    return render(request, 'recipes/formRecipe.html', {'form': form, 'tags': tags})
+    return render(request,
+                  'recipes/formRecipe.html',
+                  {'form': form, 'tags': tags})
 
 
 @login_required
 def recipe_edit(request, recipe_id, username):
-    recipe = get_object_or_404(Recipe, author__username=username, id=recipe_id)
-    ing = RecipeIngredients.objects.filter(recipe=recipe_id)
+    recipe = get_object_or_404(Recipe,
+                               author__username=username,
+                               id=recipe_id)
+    ings = RecipeIngredient.objects.filter(recipe=recipe_id)
     form = RecipeForm(request.POST or None, files=request.FILES or None,
                       instance=recipe)
     tags = Tag.objects.all()
     context = {'form': form, 'recipe': recipe,
-               'ingredients': ing, 'tags': tags}
+               'ingredients': ings, 'tags': tags}
 
     if recipe.author == request.user:
         ingredients = get_ingredients(request.POST)
 
         if form.is_valid():
-            ing.delete()
+            ings.delete()
             recipe = form.save(commit=False)
             save_recipe(recipe, ingredients, request)
             form.save_m2m()
-            print(recipe.tags.all())
             return redirect('recipe', username=request.user.username,
                             recipe_id=recipe.id)
 
@@ -74,7 +79,9 @@ def recipe_edit(request, recipe_id, username):
 
 @login_required
 def recipe_delete(request, recipe_id, username):
-    recipe = get_object_or_404(Recipe, author__username=username, id=recipe_id)
+    recipe = get_object_or_404(Recipe,
+                               author__username=username,
+                               id=recipe_id)
 
     if request.user != recipe.author:
         return redirect(
@@ -88,10 +95,13 @@ def recipe_delete(request, recipe_id, username):
 
 
 def recipe_view(request, username, recipe_id):
-    recipe = get_object_or_404(Recipe, author__username=username, id=recipe_id)
-    ingredients = recipe.recipeingredient.all()
-    return render(request, 'recipes/recipe_view.html', {'recipe': recipe,
-                                                        'ingredients': ingredients})
+    recipe = get_object_or_404(Recipe,
+                               author__username=username,
+                               id=recipe_id)
+    ingredients = recipe.recipe_ingredient.all()
+    return render(request,
+                  'recipes/recipe_view.html',
+                  {'recipe': recipe, 'ingredients': ingredients})
 
 
 def profile(request, username):
@@ -163,19 +173,20 @@ def download(request):
     recipes = Purchase.purchase.get_purchases_list(user)
     all_ingredients = []
     for recipe in recipes:
-        ingredients = recipe.recipeingredient.all()
+        ingredients = recipe.recipe_ingredient.all()
         for ingredient in ingredients:
-            if (any([ingr.ingredient.name == ingredient.ingredient.name for ingr in all_ingredients])) is False:
-                print(ingredient.ingredient.name)
+            if not (any([ingr.ingredient.name == ingredient.ingredient.name
+                         for ingr in all_ingredients])):
                 all_ingredients.append(ingredient)
             else:
-                exist_ing = [x for x in all_ingredients if x.ingredient.name == ingredient.ingredient.name][0]
+                exist_ing = [x for x in all_ingredients
+                             if x.ingredient.name == ingredient.ingredient.name][0]
                 exist_ing.quantity = exist_ing.quantity + ingredient.quantity
 
     products = [
-         (f'{i.ingredient.name} -'
-          f' {i.quantity} {i.ingredient.unit}')
-         for i in all_ingredients]
+        (f'{i.ingredient.name} -'
+         f' {i.quantity} {i.ingredient.unit}')
+        for i in all_ingredients]
     content = '\n'.join(products)
     response = HttpResponse(content, content_type='text/plain')
     response['Content-Disposition'] = f'attachment; filename={filename}'
@@ -214,10 +225,8 @@ def get_ingredients(data):
 def save_recipe(recipe, ingredients, request):
     recipe.author = request.user
     recipe.save()
-    recipe_ingredients = []
-
     for item in ingredients:
-        receipting = RecipeIngredients(
+        receipting = RecipeIngredient(
             quantity=item.get('quantity'),
             ingredient=Ingredient.objects.get(name=item.get('name')),
             recipe=recipe)
