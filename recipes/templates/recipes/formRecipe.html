@@ -113,12 +113,12 @@
                 </div>
             </div>
             <div class="form__group">
-                <label for="id_descriptions" class="form__label">Описание</label>
+                <label for="id_description" class="form__label">Описание</label>
                 <div class="form__field-group">
-                    {{ form.descriptions|addclass:"form__textarea" }}
+                    {{ form.description|addclass:"form__textarea" }}
                     {% if form.errors %}
-                        {% for error in field.errors %}
-                            <span class="form__error">{{ error|escape }}</span>
+                    {% for error in field.errors %}
+                    <span class="form__error">{{ error|escape }}</span>
                         {% endfor %}
                     {% endif %}
                 </div>

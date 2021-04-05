@@ -30,8 +30,8 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='recipes/',
                               blank=False, null=True,
                               verbose_name='модель изображения')
-    descriptions = models.TextField(blank=False,
-                                    verbose_name='описание')
+    description = models.TextField(blank=False,
+                                   verbose_name='описание')
     ingredients = models.ManyToManyField(Ingredient,
                                          verbose_name='ингредиенты')
     tags = TaggableManager()
