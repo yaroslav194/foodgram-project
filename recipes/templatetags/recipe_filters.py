@@ -14,9 +14,7 @@ def formatting_tags(request, tag):
     if 'tags' in request.GET:
         tags = request.GET.get('tags')
         tags = tags.split(',')
-        for i in tags:
-            if tags == '':
-                i.remove('')
+        tags = [el for el in tags if el != '']
         if tag not in tags:
             tags.append(tag)
         else:

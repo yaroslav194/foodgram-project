@@ -99,7 +99,7 @@ def recipe_view(request, username, recipe_id):
     recipe = get_object_or_404(Recipe,
                                author__username=username,
                                id=recipe_id)
-    ingredients = recipe.recipe_singredient.all()
+    ingredients = recipe.recipe_ingredients.all()
     return render(request,
                   'recipes/recipe_view.html',
                   {'recipe': recipe, 'ingredients': ingredients})
@@ -174,7 +174,7 @@ def download(request):
     recipes = Purchase.purchase.get_purchases_list(user)
     all_ingredients = []
     for recipe in recipes:
-        ingredients = recipe.recipe_singredient.all()
+        ingredients = recipe.recipe_ingredients.all()
         for ingredient in ingredients:
             if not (any([ingr.ingredient.name == ingredient.ingredient.name
                          for ingr in all_ingredients])):
