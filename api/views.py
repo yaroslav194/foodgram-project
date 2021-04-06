@@ -7,8 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.views import View
 
 from recipes.models import Ingredient, Recipe, User
-from .managers import Purchase
-from .models import FavoriteRecipe, Subscription
+from .models import FavoriteRecipe, Subscription, Purchase
 
 
 class Favorites(LoginRequiredMixin, View):

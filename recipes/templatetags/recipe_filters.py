@@ -2,7 +2,7 @@ import pymorphy2
 from django import template
 from django.shortcuts import get_object_or_404
 
-from api.managers import Purchase
+from api.models import Purchase
 from recipes.models import Recipe
 
 register = template.Library()
@@ -14,12 +14,13 @@ def formatting_tags(request, tag):
     if 'tags' in request.GET:
         tags = request.GET.get('tags')
         tags = tags.split(',')
+        for i in tags:
+            if tags == '':
+                i.remove('')
         if tag not in tags:
             tags.append(tag)
         else:
             tags.remove(tag)
-        while '' in tags:
-            tags.remove('')
         result = ','.join(tags)
         return result
     return tag

@@ -38,6 +38,7 @@ def save_recipe(recipe, ingredients, request):
     for item in ingredients:
         receipting = RecipeIngredient(
             quantity=item.get('quantity'),
-            ingredient=Ingredient.objects.get(name=item.get('name')),
+            ingredient=
+            Ingredient.objects.get_object_or_404(name=item.get('name')),
             recipe=recipe)
         receipting.save()

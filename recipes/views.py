@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from taggit.models import Tag
 
-from api.managers import Purchase
+from api.models import Purchase
 from foodgram.settings import ITEMS_FOR_PAGINATOR
 from .forms import RecipeForm
 from .models import Recipe, RecipeIngredient, User
@@ -99,7 +99,7 @@ def recipe_view(request, username, recipe_id):
     recipe = get_object_or_404(Recipe,
                                author__username=username,
                                id=recipe_id)
-    ingredients = recipe.recipe_ingredient.all()
+    ingredients = recipe.recipe_singredient.all()
     return render(request,
                   'recipes/recipe_view.html',
                   {'recipe': recipe, 'ingredients': ingredients})
@@ -174,7 +174,7 @@ def download(request):
     recipes = Purchase.purchase.get_purchases_list(user)
     all_ingredients = []
     for recipe in recipes:
-        ingredients = recipe.recipe_ingredient.all()
+        ingredients = recipe.recipe_singredient.all()
         for ingredient in ingredients:
             if not (any([ingr.ingredient.name == ingredient.ingredient.name
                          for ingr in all_ingredients])):
@@ -192,4 +192,3 @@ def download(request):
     response = HttpResponse(content, content_type='text/plain')
     response['Content-Disposition'] = f'attachment; filename={filename}'
     return response
-

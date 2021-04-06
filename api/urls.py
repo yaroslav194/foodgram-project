@@ -14,3 +14,4 @@ urlpatterns = [
          views.Purchases.as_view(), name='delete_purchase'),
     path('ingredients/', views.get_ingredients, name='get_ingredients'),
 ]
+
