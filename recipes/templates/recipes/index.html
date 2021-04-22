@@ -15,7 +15,7 @@
 {% load filters %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% staticfiles 'pages/index.css' %}">
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
 {% endblock stylesheet %}
 
 {% block content %}
@@ -55,7 +55,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{% staticfiles 'js/components/MainCards.js' %}"></script>
+<script src="{% static 'js/components/MainCards.js' %}"></script>
 
 <script src="{% staticfiles 'js/components/Purchases.js' %}"></script>
 <script src="{% staticfiles 'js/components/Favorites.js' %}"></script>

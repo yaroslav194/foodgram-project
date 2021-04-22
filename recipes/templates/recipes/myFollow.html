@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% staticfiles '/pages/myFollow.css' %}">
+    <link rel="stylesheet" href="{% static '/pages/myFollow.css' %}">
 {% endblock stylesheet %}
 
 {% block content %}
@@ -48,22 +48,22 @@
             <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
         </div>
         {% endfor %}
-        </div>
+            </div>
     </div>
-    {% if page.has_other_pages %}
-        {% include "includes/paginator.html" with items=page paginator=paginator %}
-    {% endif %}
+{% if page.has_other_pages %}
+{% include "includes/paginator.html" with items=page paginator=paginator %}
+{% endif %}
 
 {% endblock %}
 
 {% block scripts %}
 
-<script src="{% staticfiles './js/config/config.js' %}"></script>
-<script src="{% staticfiles './js/components/MainCards.js' %}"></script>
-<script src="{% staticfiles './js/components/MyFollow.js' %}"></script>
-<script src="{% staticfiles './js/components/Subscribe.js' %}"></script>
-<script src="{% staticfiles './js/components/Header.js' %}"></script>
-<script src="{% staticfiles './js/api/Api.js' %}"></script>
-<script src="{% staticfiles 'myFollow.js' %}"></script>
+<script src="{% static './js/config/config.js' %}"></script>
+<script src="{% static './js/components/MainCards.js' %}"></script>
+<script src="{% static './js/components/MyFollow.js' %}"></script>
+<script src="{% static './js/components/Subscribe.js' %}"></script>
+<script src="{% static './js/components/Header.js' %}"></script>
+<script src="{% static './js/api/Api.js' %}"></script>
+<script src="{% static 'myFollow.js' %}"></script>
 
 {% endblock %}

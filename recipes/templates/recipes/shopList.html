@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% staticfiles '/pages/shopList.css' %}">
+    <link rel="stylesheet" href="{% static '/pages/shopList.css' %}">
 {% endblock stylesheet %}
 
 {% block content %}
@@ -31,17 +31,19 @@
             {% endfor %}
         </ul>
         {% if recipes_list %}
-            <a href="{% url 'download' %}" target="_blank"><button class="button button_style_blue">Скачать список</button></a>
+        <a href="{% url 'download' %}" target="_blank">
+            <button class="button button_style_blue">Скачать список</button>
+        </a>
         {% endif %}
     </div>
 {% endblock %}
 
 {% block scripts %}
 
-<script src="{% staticfiles './js/config/config.js' %}"></script>
-<script src="{% staticfiles './js/components/Header.js' %}"></script>
-<script src="{% staticfiles './js/components/ShopList.js' %}"></script>
-<script src="{% staticfiles './js/api/Api.js' %}"></script>
-<script src="{% staticfiles 'shopList.js' %}"></script>
+<script src="{% static './js/config/config.js' %}"></script>
+<script src="{% static './js/components/Header.js' %}"></script>
+<script src="{% static './js/components/ShopList.js' %}"></script>
+<script src="{% static './js/api/Api.js' %}"></script>
+<script src="{% static 'shopList.js' %}"></script>
 
 {% endblock scripts %}

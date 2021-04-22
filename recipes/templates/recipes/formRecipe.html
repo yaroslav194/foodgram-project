@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% staticfiles '/pages/form.css' %}">
+    <link rel="stylesheet" href="{% static '/pages/form.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -138,7 +138,7 @@
                 {% if recipe %}
                     <button class="button button_style_blue">Сохранить</button> <a style="margin-left: 2.5em" href="{% url 'recipe_delete' recipe.author.username recipe.id %}" class="form__ingredient-link">Удалить</a>
                 {% else %}
-                    <button class="button button_style_blue">Создать рецепт</button>
+                <button class="button button_style_blue">Создать рецепт</button>
                 {% endif %}
             </div>
         </form>
@@ -147,9 +147,9 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% staticfiles './js/config/config.js' %}"></script>
-    <script src="{% staticfiles './js/components/Header.js' %}"></script>
-    <script src="{% staticfiles './js/utils/debouncing.js' %}"></script>
-    <script src="{% staticfiles './js/api/Api.js' %}"></script>
-    <script src="{% staticfiles 'formRecipe.js' %}"></script>
+<script src="{% static './js/config/config.js' %}"></script>
+<script src="{% static './js/components/Header.js' %}"></script>
+<script src="{% static './js/utils/debouncing.js' %}"></script>
+<script src="{% static './js/api/Api.js' %}"></script>
+<script src="{% static 'formRecipe.js' %}"></script>
 {% endblock %}
