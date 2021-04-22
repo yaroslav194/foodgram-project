@@ -80,29 +80,29 @@
                     <h3 class="single-card__section-title">Описание:</h3>
                     <p class=" single-card__section-text">{{ recipe.description }}</p>
                 </div>
-            </div>
         </div>
     </div>
+</div>
 
 {% endblock %}
 
 {% block scripts %}
 
-<script src="{% staticfiles './js/components/Purchases.js' %}"></script>
-<script src="{% staticfiles './js/components/Favorites.js' %}"></script>
-<script src="{% staticfiles './js/components/Subscribe.js' %}"></script>
-<script src="{% staticfiles './js/config/config.js' %}"></script>
+<script src="{% static './js/components/Purchases.js' %}"></script>
+<script src="{% static './js/components/Favorites.js' %}"></script>
+<script src="{% static './js/components/Subscribe.js' %}"></script>
+<script src="{% static './js/config/config.js' %}"></script>
 
-<script src="{% staticfiles './js/components/MainCards.js' %}"></script>
-<script src="{% staticfiles './js/components/SingleCard.js' %}"></script>
-<script src="{% staticfiles './js/components/Header.js' %}"></script>
+<script src="{% static './js/components/MainCards.js' %}"></script>
+<script src="{% static './js/components/SingleCard.js' %}"></script>
+<script src="{% static './js/components/Header.js' %}"></script>
 
-<script src="{% staticfiles './js/api/Api.js' %}"></script>
+<script src="{% static './js/api/Api.js' %}"></script>
 
 {% if user.is_authenticated %}
-    <script src="{% staticfiles 'singlePage.js' %}"></script>
+<script src="{% static 'singlePage.js' %}"></script>
 {% else %}
-    <script src="{% staticfiles 'singlePageNotAuth.js' %}"></script>
+<script src="{% static 'singlePageNotAuth.js' %}"></script>
 {% endif %}
 
 {% endblock %}
